@@ -1,0 +1,203 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>Ember &amp; Oak — the world of coffee</title>
+  <meta name="description" content="Scroll to fly through the world of Ember &amp; Oak." />
+  <style>
+    /* Theme the engine here. Tokens map to the world's palette + fog. */
+    :root {
+      --sw3-bg: #F2EAD9;          /* matches world.sky */
+      --sw3-ink: #2A2320;
+      --sw3-ink-soft: #6E6358;
+      --sw3-accent: #C96F4A;      /* default accent (per-section accents override) */
+      --sw3-font: ui-sans-serif, system-ui, "Segoe UI", sans-serif;
+    }
+    body { margin: 0; background: var(--sw3-bg); }
+  </style>
+  <!-- three.js via importmap: swap the CDN for `npm i three` + bundler if you prefer -->
+  <script type="importmap">
+  {
+    "imports": {
+      "three": "https://unpkg.com/three@0.160.0/build/three.module.js",
+      "three/addons/": "https://unpkg.com/three@0.160.0/examples/jsm/"
+    }
+  }
+  </script>
+</head>
+<body>
+  <div id="top"></div>
+  <div id="world"></div>
+
+  <script type="module">
+    import { mountScrollWorld } from './engine.js';
+
+    mountScrollWorld(document.getElementById('world'), {
+      brand: { name: 'Ember &amp; Oak', href: '#top' },
+      hint: 'scroll to fly in',
+      world: {
+        sky: '#F2EAD9',
+        fog: { color: '#E8DCC8', near: 30, far: 120 },
+        ground: { color: '#E7DCC8' },
+        palette: ['#7FA97F', '#C96F4A', '#6B4A32', '#E8A33D', '#F7F1E6'],
+        sections: [
+          /* ---------------- 1. The Hills ---------------- */
+          {
+            id: 'hills', label: 'The Hills',
+            accent: '#7FA97F',
+            eyebrow: 'From leaf to last sip',
+            title: 'It starts in the hills.',
+            body: 'Shade-grown coffee on slow slopes, picked when the berries are the colour of ripe cherries.',
+            tags: ['Single-origin', 'Hand-picked', 'Shade-grown'],
+            scroll: 1.9, linger: 0.32,
+            pod: { pos: [-30, 0, -12], radius: 5.5, height: 3.6 },
+            build(world) {
+              const { sphere, cone, box, cyl, group, blob, ground } = world;
+              ground(6.2, '#E0D3BA');
+              blob(0, 0, 5.4);
+              // rolling hills
+              sphere('#8FBA87', 4.6, { x: -1.5, y: -1.6, z: 0.5, seg: 20 });
+              sphere('#7FA97F', 3.4, { x: 3.2, y: -2.2, z: -1.8, seg: 20 });
+              sphere('#A3C99B', 2.4, { x: -4.4, y: -2.6, z: -2.4, seg: 20 });
+              // coffee bushes: squashed spheres, a few berries
+              for (const [x, z, s] of [[-0.6, 2.2, 1], [1.6, 2.8, 0.8], [-2.6, 3.0, 0.9], [3.4, 1.4, 0.7]]) {
+                sphere('#6B9668', 0.55 * s, { x, y: 0.28 * s, z, ry: 0 });
+                sphere('#C96F4A', 0.12 * s, { x: x + 0.25 * s, y: 0.45 * s, z: z - 0.2 * s });
+              }
+              // farmhouse: box + pyramid roof + door
+              box('#F3E8D8', 2.6, 1.8, 2.0, { x: 2.4, y: 0.9, z: 1.6 });
+              cone('#C96F4A', 1.9, 1.1, { x: 2.4, y: 2.35, z: 1.6, seg: 4 });
+              box('#8A5A33', 0.9, 1.1, 0.1, { x: 2.4, y: 0.55, z: 2.56 });
+              // little trees
+              for (const [x, z, s] of [[-4.8, 1.2, 1], [4.6, 2.6, 0.8]]) {
+                cyl('#8A5A33', 0.14, 0.18, 0.9 * s, { x, y: 0.45 * s, z });
+                sphere('#7FA97F', 0.55 * s, { x, y: 1.05 * s, z });
+              }
+              // sun orb off to the side
+              sphere('#E8A33D', 1.4, { x: 5.8, y: 3.4, z: -4.2, seg: 20 });
+              group();
+            },
+          },
+
+          /* ---------------- 2. The Roastery ---------------- */
+          {
+            id: 'roastery', label: 'The Roastery',
+            accent: '#B0703C',
+            eyebrow: 'Fire, air, patience',
+            title: 'The roast that wakes the room.',
+            body: 'Small-batch drums, first crack to second — the beans go amber, then chestnut, then almost black.',
+            tags: ['Small-batch', 'Slow-roasted'],
+            scroll: 1.6, linger: 0.28,
+            pod: { pos: [0, 0, -12], radius: 5.5, height: 3.8 },
+            build(world) {
+              const { box, cyl, sphere, cone, torus, group, blob, ground } = world;
+              ground(6.2, '#DCCEB6');
+              blob(0, 0, 5.4);
+              // the roaster: body + drum + chimney
+              box('#6B4A32', 3.4, 2.3, 2.2, { x: 0, y: 1.15, z: 0 });
+              box('#4A3123', 3.7, 0.5, 2.5, { x: 0, y: 2.5, z: 0 });
+              cyl('#B0703C', 0.85, 0.85, 1.2, { x: 0, y: 1.6, z: 1.35, rx: Math.PI / 2, seg: 32 });
+              cyl('#C96F4A', 1.0, 1.0, 0.35, { x: 0, y: 1.6, z: 2.0, rx: Math.PI / 2, seg: 32 });
+              cyl('#E8A33D', 0.16, 0.2, 2.6, { x: 1.2, y: 3.8, z: 0.4 });
+              // warm window glow
+              box('#E8A33D', 0.9, 0.8, 0.1, { x: 0, y: 1.5, z: 1.12, emissive: '#E8A33D' });
+              // burlap sacks
+              for (const [x, z, s, ry] of [[-2.6, 1.2, 1, 0.4], [-1.7, 2.0, 0.8, -0.3], [-3.5, 2.2, 0.7, 0.9]]) {
+                sphere('#C9B28C', 0.8 * s, { x, y: 0.55 * s, z, seg: 18 });
+                sphere('#A8906B', 0.8 * s, { x: x - 0.15 * s, y: 0.55 * s, z: z + 0.2 * s, seg: 18 });
+              }
+              // crate stack
+              box('#9A6B3F', 1.4, 0.9, 1.4, { x: 2.8, y: 0.45, z: 1.6 });
+              box('#8A5A33', 1.4, 0.9, 1.4, { x: 2.8, y: 1.35, z: 1.6 });
+              // vent pipe
+              cyl('#6B4A32', 0.5, 0.5, 3.4, { x: -1.4, y: 4.2, z: 0.2 });
+              cone('#6B4A32', 0.55, 0.7, { x: -1.4, y: 5.7, z: 0.2 });
+              group();
+            },
+          },
+
+          /* ---------------- 3. The Cart ---------------- */
+          {
+            id: 'cart', label: 'The Cart',
+            accent: '#3E7C78',
+            eyebrow: 'Corner of 5th &amp; Maple',
+            title: 'Good mornings, served daily.',
+            body: 'The cart rolls out at dawn. Pour-overs, flat whites, and a queue that does not take it personally.',
+            tags: ['Pour-over', 'Plant milk', 'Open daily'],
+            scroll: 1.6, linger: 0.28,
+            pod: { pos: [30, 0, -12], radius: 5.5, height: 3.6 },
+            build(world) {
+              const { box, cyl, sphere, cone, torus, group, blob, ground } = world;
+              ground(6.2, '#DFD3BD');
+              blob(0, 0, 5.4);
+              // cart body + counter
+              box('#F7F1E6', 3.6, 1.1, 1.9, { x: 0, y: 0.55, z: 0 });
+              box('#8A5A33', 3.6, 0.25, 1.9, { x: 0, y: 1.2, z: 0 });
+              box('#F7F1E6', 0.25, 1.1, 1.9, { x: 1.68, y: 0.55, z: 0 });
+              // awning (half barrel)
+              cyl('#3E7C78', 1.15, 1.15, 2.1, { x: 0, y: 2.7, z: 0.05, ry: Math.PI / 2, seg: 24 });
+              box('#2F615D', 0.18, 0.35, 2.3, { x: 0, y: 2.35, z: 0 });
+              // wheels
+              torus('#4A3123', 0.5, 0.16, { x: -1.45, y: 0.5, z: 1.05, ry: Math.PI / 2, tseg: 10 });
+              torus('#4A3123', 0.5, 0.16, { x: 1.45, y: 0.5, z: 1.05, ry: Math.PI / 2, tseg: 10 });
+              // cups on the counter
+              cyl('#FBF4E8', 0.16, 0.13, 0.3, { x: -1.1, y: 1.5, z: 0.5 });
+              cyl('#E8A33D', 0.1, 0.1, 0.08, { x: -1.1, y: 1.68, z: 0.5 });
+              cyl('#FBF4E8', 0.16, 0.13, 0.3, { x: 1.0, y: 1.5, z: 0.2 });
+              cyl('#E8A33D', 0.1, 0.1, 0.08, { x: 1.0, y: 1.68, z: 0.2 });
+              // steam wisps
+              sphere('#FFFFFF', 0.18, { x: -1.1, y: 1.95, z: 0.5, transparent: true, opacity: 0.45 });
+              sphere('#FFFFFF', 0.24, { x: -1.05, y: 2.35, z: 0.55, transparent: true, opacity: 0.3 });
+              sphere('#FFFFFF', 0.14, { x: 1.0, y: 1.95, z: 0.2, transparent: true, opacity: 0.45 });
+              // stool + tree beside
+              cyl('#8A5A33', 0.35, 0.5, 0.5, { x: 2.6, y: 0.25, z: 1.9 });
+              sphere('#7FA97F', 1.1, { x: -3.4, y: 1.2, z: 2.0 });
+              group();
+            },
+          },
+
+          /* ---------------- 4. The Cup (hero + CTA) ---------------- */
+          {
+            id: 'cup', label: 'The Cup',
+            accent: '#E8A33D',
+            eyebrow: 'And it all pours into',
+            title: 'One perfect cup.',
+            body: 'Every hill, every roast, every early morning — in a cup that is yours for a moment, then gone.',
+            tags: [],
+            scroll: 2.1, linger: 0.36,
+            cta: {
+              primary: { label: 'Order a bag', href: '#' },
+              secondary: { label: 'Find the cart', href: '#' },
+            },
+            pod: { pos: [60, 0, -12], radius: 5.5, height: 4.2 },
+            build(world) {
+              const { box, cyl, sphere, cone, torus, group, blob, ground } = world;
+              ground(6.6, '#E3D8C2');
+              blob(0, 0, 6.0);
+              // pedestal
+              cyl('#C9B28C', 2.6, 2.9, 0.5, { x: 0, y: 0.25, z: 0, seg: 40 });
+              // saucer + cup
+              cyl('#FBF4E8', 1.9, 1.9, 0.22, { x: 0, y: 0.62, z: 0, seg: 40 });
+              cyl('#FBF4E8', 0.95, 0.72, 1.5, { x: 0, y: 1.35, z: 0, seg: 32 });
+              torus('#FBF4E8', 0.72, 0.16, { x: 0, y: 1.55, z: 0.72, ry: Math.PI / 2, tseg: 10 });
+              // the pour: dark liquid lip + steam column
+              cyl('#4A3123', 0.78, 0.78, 0.12, { x: 0, y: 2.0, z: 0, seg: 32 });
+              sphere('#FFFFFF', 0.3, { x: 0, y: 2.45, z: 0, transparent: true, opacity: 0.5 });
+              sphere('#FFFFFF', 0.42, { x: 0.08, y: 3.0, z: 0.05, transparent: true, opacity: 0.32 });
+              sphere('#FFFFFF', 0.3, { x: -0.06, y: 3.6, z: -0.04, transparent: true, opacity: 0.22 });
+              // beans scattered on the pedestal
+              for (const [x, z, s] of [[1.7, 0.9, 1], [-1.8, 1.1, 0.9], [1.2, -1.5, 0.8], [-0.9, -1.8, 0.9], [2.1, -0.6, 0.7]]) {
+                sphere('#4A3123', 0.11 * s, { x, y: 0.1, z, ry: 0.6, seg: 12 });
+              }
+              // golden ring behind (brand halo)
+              torus('#E8A33D', 3.4, 0.12, { x: 0, y: 2.2, z: -3.4, ry: 0, tseg: 8 });
+              group();
+            },
+          },
+        ],
+      },
+    });
+  </script>
+</body>
+</html>
