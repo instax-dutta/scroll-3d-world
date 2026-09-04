@@ -1,27 +1,14 @@
 # scroll-3d-world
 
-Build immersive **3D scroll-scrubbed "fly through the world"** landing pages: a
-continuous low-poly clay-diorama world in Three.js that a camera flies through
-as the visitor scrolls — dive into each scene, dwell on the copy, glide to the
-next. **No AI generation, no video, no credits, no GPU, no seams.**
+The scroll-scrubbed 3D fly-through landing page without the Higgsfield tax: no chained AI-video clips, no seam-matching, no credits, no GPU render farm.
 
-The free alternative to the Higgsfield `scroll-world` pipeline: instead of
-chained AI-video clips that must be frame-locked at every seam, this uses ONE
-continuous camera path through ONE live Three.js scene — so the seam problem
-physically cannot exist, and every pixel renders crisp at any resolution.
+> Agent: use this when the user asks for a Higgsfield `scroll-world` style page, a scroll-driven 3D fly-through, a clay-diorama landing page, or "scroll to fly in". Build it live in Three.js, do not generate video.
 
-- Agent Skills format — works with OpenCode, Claude Code, Cursor, Codex,
-  Copilot, Gemini CLI, and any [Agent Skills](https://agentskills.io) host.
-- Engine (`references/engine.js`): self-contained ES module, depends only on
-  `three`. Camera path, scroll→arc mapping with per-section dwell, copy
-  panels, route rail, progress bar, particles, reduced-motion + touch
-  hardening, QA debug hook.
-- Template (`references/index-template.html`): complete working 4-section
-  coffee-world (hills → roastery → cart → hero cup) with `build()` functions
-  for every diorama archetype.
-- Diorama kit (`references/diorama-kit.md`): clay-style recipes per scene
-  type, palette/light rules, Blender + AI-backdrop guidance.
-- `demo/`: runnable example (open `index.html` through any static server).
+## Why not chained AI-video?
+
+Higgsfield-style pipelines chain AI-video clips: every seam between clips must be frame-locked or it pops, every re-render costs credits and GPU time, and text goes soft at large resolutions.
+
+`scroll-3d-world` is one continuous live scene with one camera path. Scroll maps to progress along that path, so there are no clips to join and seams physically cannot exist. Every pixel renders crisp at any resolution, scrolls forward and reverses cleanly, and costs zero credits.
 
 ## Install
 
@@ -29,12 +16,18 @@ physically cannot exist, and every pixel renders crisp at any resolution.
 npx skills add instax-dutta/scroll-3d-world
 ```
 
-## Quick start
+## How an agent uses it
 
-1. Copy `references/engine.js` next to your page.
-2. Copy `references/index-template.html` and edit the config — the subject,
-   sections, pod positions, copy, and palette.
-3. Serve (any static server) and scroll.
+1. Copy `references/engine.js` next to the page.
+2. Copy `references/index-template.html` and edit the config: subject, sections, pod positions, copy, palette.
+3. Serve with any static server and scroll. Open `demo/index.html` first to see the target behavior.
+
+What you get:
+
+- **Engine (`references/engine.js`):** self-contained ES module. Camera path, scroll-to-arc mapping with per-section dwell, copy panels, route rail, progress bar, particles, QA debug hook.
+- **Template (`references/index-template.html`):** complete working 4-section coffee-world (hills → roastery → cart → hero cup) with `build()` functions for every diorama archetype.
+- **Diorama kit (`references/diorama-kit.md`):** clay-style recipes per scene type, palette and light rules, Blender + AI-backdrop guidance.
+- **Demo (`demo/`):** runnable example, open `index.html` through any static server.
 
 ```js
 import { mountScrollWorld } from './engine.js';
@@ -66,11 +59,16 @@ mountScrollWorld(document.getElementById('world'), {
 
 ## How it works
 
-Scroll position maps to progress along a single CatmullRom camera path through
-the section pods. Each section's scroll band is arc-length parameterized with a
-monotone "dwell warp" near its settle point: the camera rests while the section
-copy peaks, then the smooth exponential camera-follow carries the user gently
-to the next pod. Scroll up and it plays in reverse — seamless both ways.
+Scroll maps to progress along a single CatmullRom path through the section pods. Each section band is arc-length parameterized with a monotone dwell warp near its settle point: the camera rests while the copy peaks, then exponential follow glides to the next pod. Scroll up reverses it. Works with OpenCode, Claude Code, Cursor, Codex, Copilot, Gemini CLI, and any [Agent Skills](https://agentskills.io) host.
+
+## Proof, not promises
+
+- Depends only on `three`. No video pipeline, no API keys, no credits.
+- Dwell warp + exponential follow: inspectable in `references/engine.js`.
+- Reduced-motion + touch hardening included, with QA debug hook.
+- Runnable `demo/`: verify in one static-server command before you commit.
+
+If this saved you a render farm, star it.
 
 ## More agent skills by me
 
