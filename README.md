@@ -71,3 +71,12 @@ the section pods. Each section's scroll band is arc-length parameterized with a
 monotone "dwell warp" near its settle point: the camera rests while the section
 copy peaks, then the smooth exponential camera-follow carries the user gently
 to the next pod. Scroll up and it plays in reverse — seamless both ways.
+
+## More agent skills by me
+
+- [flash-compare](https://github.com/instax-dutta/flash-compare) - Flash-style top-1% product comparisons, exactly how flash.co works
+- [master-pitcher](https://github.com/instax-dutta/master-pitcher) - Audit, draft, or roast pitch decks with an 18-check VC framework
+- [brand-vibes](https://github.com/instax-dutta/brand-vibes) - Apply any company's design language while vibecoding, 66 brand profiles
+- [roadmap-tutor](https://github.com/instax-dutta/roadmap-tutor) - Learn any roadmap.sh roadmap one topic at a time, tracked across sessions
+- [market-validator](https://github.com/instax-dutta/market-validator) - Validate SaaS ideas with real user complaints across 10+ platforms
+- [google-code-review](https://github.com/instax-dutta/google-code-review) - Google's code review best practices as an agent skill
