@@ -78,3 +78,4 @@ If this saved you a render farm, star it.
 - [roadmap-tutor](https://github.com/instax-dutta/roadmap-tutor) - Learn any roadmap.sh roadmap one topic at a time, tracked across sessions
 - [market-validator](https://github.com/instax-dutta/market-validator) - Validate SaaS ideas with real user complaints across 10+ platforms
 - [google-code-review](https://github.com/instax-dutta/google-code-review) - Google's code review best practices as an agent skill
+- [finetune-llm](https://github.com/instax-dutta/finetune-llm) - Hardware-aware LLM fine-tuning: probe the GPU, pick the engine, verify the result
